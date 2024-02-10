@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        
+        #thumbnailContainer {
+            display: flex;
+        }
+
+        .thumbnail {
+            margin: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mainImageContainer {
+            width: 20%;
+            height: auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #mainImage {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        #imageDescription {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="thumbnailContainer">
+    <img class="thumbnail" src="crunchy.jpg" data-src="crunchy.jpg" data-description="crunchy cat">
+    <img class="thumbnail" src="black.jpg" data-src="black.jpg" data-description="cat stare">
+    <img class="thumbnail" src="tired.png" data-src="tired.png" data-description="tired cat">
+    <img class="thumbnail" src="banana.jpg" data-src="banana.jpg" data-description="banana cat">
+    <img class="thumbnail" src="sad.jpg" data-src="sad.jpg" data-description="sad cat">
+    <img class="thumbnail" src="milk.jpg" data-src="milk.jpg" data-description="silly cat">
+</div>
+
+<div id="mainImageContainer">
+    <img id="mainImage" src="mydieu.jpg" alt="Main Image">
+    <div id="imageDescription"></div>
+</div>
+
+<script>
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const mainImage = document.getElementById('mainImage');
+    const imageDescription = document.getElementById('imageDescription');
+    let originalImageUrl = mainImage.src;
+    let originalDescription = imageDescription.innerText;
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('mouseover', () => {
+            const imageUrl = thumbnail.getAttribute('data-src');
+            const description = thumbnail.getAttribute('data-description');
+            mainImage.src = imageUrl;
+            imageDescription.innerText = description;
+            imageDescription.style.display = 'block';
+        });
+
+        thumbnail.addEventListener('mouseout', () => {
+            mainImage.src = originalImageUrl;
+            imageDescription.innerText = originalDescription;
+            imageDescription.style.display = 'none';
+        });
+    });
+</script>
+<script>
+    var currentImageIndex = 0;
+    var imageList = [
+      { url: 'crunchy.jpg'},
+      { url: 'black.jpg'},
+      { url: 'tired.png'},
+      { url: 'banana.jpg'},
+      { url: 'sad.jpg'},
+      { url: 'milk.jpg'}
+    ];
+  
+    function changeImage(imageUrl, description) {
+      document.getElementById('mainImage').src = imageUrl;
+      document.getElementById('imageDescription').innerText = description;
+    }
+  
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        changeImage(imageList[currentImageIndex].url, imageList[currentImageIndex].description);
+        currentImageIndex = (currentImageIndex + 1) % imageList.length;
+      }
+    });
+  </script>
+
+</body>
+</html>
